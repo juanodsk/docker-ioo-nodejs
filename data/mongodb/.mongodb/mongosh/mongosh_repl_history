@@ -1,0 +1,5 @@
+db.pacientes.find()
+db.usuarios.find()
+show collections
+use clinica
+show dbs

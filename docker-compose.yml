@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - ./data/mongodb:/data/db
+    ports:
+      - "27018:27017"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/clinica
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
+    driver: local
