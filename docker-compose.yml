@@ -1,12 +1,19 @@
 version: "3"
 services:
   mongodb:
-    image: mongo
+    image: mongo:4.4
     container_name: mongodb
     volumes:
       - ./data/mongodb:/data/db
     ports:
       - "27018:27017"
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ ping: 1 })' || exit 1"]
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - backend-network
 
   backend:
     build:
@@ -16,9 +23,13 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    networks:
+      - backend-network
     environment:
       - MONGO_URI=mongodb://mongodb:27017/clinica
+    
 
   frontend:
     build:
@@ -29,7 +40,11 @@ services:
       - "5173:5173"
     depends_on:
       - backend
-
+    networks:
+      - backend-network
+networks:
+  backend-network:
+    driver: bridge
 volumes:
   mongo-data:
     driver: local

@@ -62,7 +62,7 @@ function EditPacienteModal({ show, setShow, paciente, onSave }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/api/actualizar/${paciente._id}`, {
+      await axios.put(`http://localhost:3000/api/editar/${paciente._id}`, {
         nombre,
         apellido,
         telefono,
