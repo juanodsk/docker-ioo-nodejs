@@ -194,6 +194,12 @@ function AddPacienteModal({ show, setShow, onSave }) {
       });
       onSave(); // Llamar la función pasada como prop
       setShow(false); // Cerrar el modal
+      setNombre("");
+      setApellido("");
+      setTelefono("");
+      setDireccion("");
+      setFechaNacimiento("");
+      setFechaIngreso("");
     } catch (error) {
       console.error("Error al agregar paciente:", error);
     }
